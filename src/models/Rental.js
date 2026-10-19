@@ -13,11 +13,11 @@ const rentalSchema = new mongoose.Schema({
     },
     startDate: {
         type: Date,
-        required: true // Təhvil tarixi[cite: 1]
+        required: true 
     },
     endDate: {
         type: Date,
-        required: true // Qaytarma tarixi[cite: 1]
+        required: true 
     },
     totalPrice: {
         type: Number,

@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 
-// Token yoxlamaq (Giriş edib-etmədiyini yoxlamaq üçün)
 export const verifyToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -11,14 +10,13 @@ export const verifyToken = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded; // İstifadəçi məlumatlarını req.user-ə yazırıq
+        req.user = decoded; 
         next();
     } catch (error) {
         return res.status(403).json({ error: "Yanlış və ya vaxtı bitmiş token!" });
     }
 };
 
-// Admin rolunu yoxlamaq üçün middleware
 export const verifyAdmin = (req, res, next) => {
     if (req.user && req.user.role === "admin") {
         next();

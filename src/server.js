@@ -15,7 +15,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Route-ların qeydiyyatı
 app.use("/api/auth", authRoutes);
 app.use("/api/cars", carRoutes);
 app.use("/api/rentals", rentalRoutes);

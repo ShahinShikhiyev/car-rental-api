@@ -4,7 +4,6 @@ import { verifyToken, verifyAdmin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// Bütün markaları gətir
 router.get("/", async (req, res) => {
     try {
         const brands = await Brand.find();
@@ -14,7 +13,6 @@ router.get("/", async (req, res) => {
     }
 });
 
-// Yeni marka əlavə et (Yalnız Admin)
 router.post("/", verifyToken, verifyAdmin, async (req, res) => {
     try {
         const { name } = req.body;

@@ -2,18 +2,15 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-// Qeydiyyat (Register)
 export const register = async (req, res) => {
     try {
         const { username, email, password, role } = req.body;
 
-        // E-poçt mövcuddurmu yoxlayaq
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ error: "Bu e-poçt ünvanı artıq istifadə olunub!" });
         }
 
-        // Şifrəni hash-ləyirik (bcrypt ilə)
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -32,7 +29,6 @@ export const register = async (req, res) => {
     }
 };
 
-// Giriş (Login)
 export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -42,13 +38,11 @@ export const login = async (req, res) => {
             return res.status(400).json({ error: "E-poçt və ya şifrə yanlışdır!" });
         }
 
-        // Şifrəni yoxlayırıq
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(400).json({ error: "E-poçt və ya şifrə yanlışdır!" });
         }
 
-        // JWT token yaradırıq
         const token = jwt.sign(
             { id: user._id, role: user.role },
             process.env.JWT_SECRET,

@@ -1,11 +1,10 @@
 import Rental from "../models/Rental.js";
 import Car from "../models/Car.js";
 
-// Yeni icarə yaratmaq və tarix kəsişməsini yoxlamaq
 export const createRental = async (req, res) => {
     try {
         const { carId, startDate, endDate } = req.body;
-        const userId = req.user?.id; // Autentifikasiya olunmuş istifadəçi (middleware-dən gələcək)
+        const userId = req.user?.id; 
 
         const start = new Date(startDate);
         const end = new Date(endDate);
@@ -14,7 +13,6 @@ export const createRental = async (req, res) => {
             return res.status(400).json({ error: "Qaytarma tarixi təhvil tarixindən sonrakı gün olmalıdır!" });
         }
 
-        // ƏSAS QAYDA: Həmin tarixlərdə bu avtomobil artıq icarədədirmi?
         const conflictingRental = await Rental.findOne({
             car: carId,
             status: "active",
@@ -29,7 +27,6 @@ export const createRental = async (req, res) => {
             });
         }
 
-        // Avtomobilin günlük qiymətini tapıb ümumi məbləği hesablayaq
         const car = await Car.findById(carId);
         if (!car || !car.isAvailable) {
             return res.status(404).json({ error: "Avtomobil tapılmadı və ya aktiv deyil." });
@@ -40,7 +37,7 @@ export const createRental = async (req, res) => {
         const totalPrice = diffDays * car.dailyPrice;
 
         const newRental = new Rental({
-            user: userId || req.body.userId, // Test üçün keçici olaraq req.body də dəstəkləyə bilərik
+            user: userId || req.body.userId,
             car: carId,
             startDate: start,
             endDate: end,

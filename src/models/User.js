@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         enum: ["admin", "customer"],
-        default: "customer" // Tələbdə minimum 2 rol tələb olunur[cite: 1]
+        default: "customer"
     }
 }, {
     timestamps: true

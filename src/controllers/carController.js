@@ -1,30 +1,25 @@
 import Car from "../models/Car.js";
 
-// Bütün avtomobilləri gətirmək (Axtarış, Filtr və Səhifələmə ilə)
 export const getCars = async (req, res) => {
     try {
         const { search, brand, minPrice, maxPrice, page = 1, limit = 10 } = req.query;
 
         let query = {};
 
-        // Marka üzrə filtr
         if (brand) {
             query.brand = brand;
         }
 
-        // Qiymət aralığı üzrə filtr
         if (minPrice || maxPrice) {
             query.dailyPrice = {};
             if (minPrice) query.dailyPrice.$gte = Number(minPrice);
             if (maxPrice) query.dailyPrice.$lte = Number(maxPrice);
         }
 
-        // Axtarış (model adına görə)
         if (search) {
-            query.modelName = { $regex: search, $options: "i" }; // Böyük/kiçik hərf həssaslığını aradan qaldırır
+            query.modelName = { $regex: search, $options: "i" }; 
         }
 
-        // Səhifələmə (Pagination) parametrləri
         const skip = (Number(page) - 1) * Number(limit);
 
         const cars = await Car.find(query)
@@ -46,7 +41,6 @@ export const getCars = async (req, res) => {
     }
 };
 
-// Yeni avtomobil əlavə etmək (Yalnız Admin)
 export const createCar = async (req, res) => {
     try {
         const { brand, modelName, dailyPrice, year } = req.body;
@@ -66,7 +60,6 @@ export const createCar = async (req, res) => {
     }
 };
 
-// Avtomobili silmək (Yalnız Admin)
 export const deleteCar = async (req, res) => {
     try {
         const { id } = req.params;

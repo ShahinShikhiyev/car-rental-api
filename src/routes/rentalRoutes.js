@@ -4,6 +4,6 @@ import { verifyToken } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", verifyToken, createRental); // Giriş etmiş istifadəçi icarəyə götürə bilər
+router.post("/", verifyToken, createRental); 
 
 export default router;
