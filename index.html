@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental - İdarəetmə Paneli</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen pb-12">
+
+    <!-- Navbar -->
+    <nav class="bg-slate-900 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl">🚘</span>
+                <span class="text-xl font-bold tracking-wide">RentCar<span class="text-blue-500">API</span></span>
+            </div>
+            <div id="authStatus" class="text-sm flex items-center space-x-4">
+                <span id="userDisplay" class="text-slate-300">Giriş edilməyib</span>
+                <button id="logoutBtn" onclick="logout()" class="hidden bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded text-xs font-medium transition">Çıxış</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+
+        <!-- Bildiriş Qutusu (Alert) -->
+        <div id="alertBox" class="hidden p-4 rounded-lg shadow-sm border text-sm font-medium transition-all"></div>
+
+        <!-- Login Bölməsi -->
+        <div id="loginSection" class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-md border border-slate-200">
+            <h2 class="text-2xl font-bold mb-2 text-slate-800">Sistemə Giriş</h2>
+            <p class="text-slate-500 text-sm mb-6">Əməliyyatlar üçün admin kimi daxil olun.</p>
+            
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">E-poçt</label>
+                    <input type="email" id="email" value="shahin@test.com" required 
+                        class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Şifrə</label>
+                    <input type="password" id="password" value="123" required 
+                        class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <button type="submit" 
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition shadow">
+                    Daxil Ol
+                </button>
+            </form>
+        </div>
+
+        <!-- Admin İdarəetmə Paneli (Gizli gəlir) -->
+        <div id="adminPanel" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Marka Yaratma Formu -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center space-x-2">
+                    <span>🏷️</span> <span>Yeni Marka Əlavə Et</span>
+                </h3>
+                <form id="brandForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Marka Adı</label>
+                        <input type="text" id="brandName" required 
+                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+                    <button type="submit" 
+                        class="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-2 rounded-lg transition">
+                        Marka Yarat
+                    </button>
+                </form>
+            </div>
+
+            <!-- Avtomobil Yaratma Formu -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center space-x-2">
+                    <span>🚗</span> <span>Yeni Avtomobil Əlavə Et</span>
+                </h3>
+                <form id="carForm" class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-700 mb-1">Marka Seçin</label>
+                        <select id="carBrandSelect" required class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-sm">
+                            <option value="">Markalar yüklənir...</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">Model</label>
+                            <input type="text" id="carModel" required 
+                                class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">İl</label>
+                            <input type="number" id="carYear" value="2023" required 
+                                class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-700 mb-1">Günlük Qiymət (₼)</label>
+                        <input type="number" id="carPrice" placeholder="120" required 
+                            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm">
+                    </div>
+                    <button type="submit" 
+                        class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 rounded-lg transition">
+                        Avtomobil Yarat
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- Avtomobillər Siyahısı -->
+        <div>
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-slate-800">Mövcud Avtomobillər və İcarə</h2>
+                <button onclick="loadData()" class="text-sm bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1.5 rounded-lg transition">
+                    🔄 Yenilə
+                </button>
+            </div>
+
+            <div id="carsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Kartlar bura yüklənəcək -->
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        let token = localStorage.getItem('token') || '';
+
+        window.onload = () => {
+            updateUIState();
+            loadData();
+        };
+
+        function showAlert(message, isError = false) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.textContent = message;
+            alertBox.className = `p-4 rounded-lg shadow-sm border text-sm font-medium ${
+                isError ? 'bg-red-50 text-red-700 border-red-300' : 'bg-emerald-50 text-emerald-700 border-emerald-300'
+            }`;
+            alertBox.classList.remove('hidden');
+            setTimeout(() => alertBox.classList.add('hidden'), 6000);
+        }
+
+        function updateUIState() {
+            const loginSection = document.getElementById('loginSection');
+            const adminPanel = document.getElementById('adminPanel');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const userDisplay = document.getElementById('userDisplay');
+
+            if (token) {
+                loginSection.classList.add('hidden');
+                adminPanel.classList.remove('hidden');
+                logoutBtn.classList.remove('hidden');
+                userDisplay.textContent = '✅ Admin kimi daxil olunub';
+            } else {
+                loginSection.classList.remove('hidden');
+                adminPanel.classList.add('hidden');
+                logoutBtn.classList.add('hidden');
+                userDisplay.textContent = 'Giriş edilməyib';
+            }
+        }
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const res = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    token = data.token;
+                    localStorage.setItem('token', token);
+                    showAlert('Uğurla daxil oldunuz!', false);
+                    updateUIState();
+                    loadData();
+                } else {
+                    showAlert(data.error || 'Xəta baş verdi', true);
+                }
+            } catch (err) {
+                showAlert('Serverlə əlaqə yoxdur.', true);
+            }
+        });
+
+        function logout() {
+            token = '';
+            localStorage.removeItem('token');
+            updateUIState();
+            loadData();
+            showAlert('Çıxış edildi.', false);
+        }
+
+        async function loadData() {
+            await fetchBrands();
+            await fetchCars();
+        }
+
+        async function fetchBrands() {
+            try {
+                const res = await fetch(`${API_URL}/brands`);
+                const data = await res.json();
+                const brands = data.brands || data;
+                const select = document.getElementById('carBrandSelect');
+
+                if (brands && brands.length > 0) {
+                    select.innerHTML = brands.map(b => `<option value="${b._id}">${b.name}</option>`).join('');
+                } else {
+                    select.innerHTML = '<option value="">Əvvəlcə marka yaradın!</option>';
+                }
+            } catch (err) {
+                console.error('Markalar yüklənmədi', err);
+            }
+        }
+
+        // Marka yaratmaq
+        document.getElementById('brandForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('brandName').value;
+
+            try {
+                const res = await fetch(`${API_URL}/brands`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ name })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    showAlert('Marka uğurla əlavə edildi!', false);
+                    document.getElementById('brandName').value = '';
+                    fetchBrands();
+                } else {
+                    showAlert(data.error || 'Marka yaradıla bilmədi', true);
+                }
+            } catch (err) {
+                showAlert('Xəta baş verdi', true);
+            }
+        });
+
+        // Avtomobil yaratmaq
+        document.getElementById('carForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const brand = document.getElementById('carBrandSelect').value;
+            const modelName = document.getElementById('carModel').value;
+            const year = Number(document.getElementById('carYear').value);
+            const dailyPrice = Number(document.getElementById('carPrice').value);
+
+            try {
+                const res = await fetch(`${API_URL}/cars`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ brand, modelName, year, dailyPrice })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    showAlert('Avtomobil uğurla əlavə edildi!', false);
+                    document.getElementById('carModel').value = '';
+                    fetchCars();
+                } else {
+                    const errorMsg = data.error || (data.errors ? data.errors[0].msg : 'Xəta baş verdi');
+                    showAlert(`❌ ${errorMsg}`, true);
+                }
+            } catch (err) {
+                showAlert('Xəta baş verdi', true);
+            }
+        });
+
+        // Avtomobili silmək (DELETE /api/cars/:id)
+        async function deleteCar(carId) {
+            if (!confirm('Bu avtomobili silmək istədiyinizə əminsinizmi?')) return;
+
+            try {
+                const res = await fetch(`${API_URL}/cars/${carId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    showAlert('🗑️ Avtomobil uğurla silindi!', false);
+                    fetchCars();
+                } else {
+                    showAlert(data.error || 'Silinmə zamanı xəta baş verdi', true);
+                }
+            } catch (err) {
+                showAlert('Sorğu xətası.', true);
+            }
+        }
+
+        // Avtomobilləri gətir
+        async function fetchCars() {
+            const grid = document.getElementById('carsGrid');
+            grid.innerHTML = '<p class="text-slate-500">Yüklənir...</p>';
+
+            try {
+                const res = await fetch(`${API_URL}/cars`);
+                const data = await res.json();
+                const cars = data.cars || data;
+
+                if (!cars || cars.length === 0) {
+                    grid.innerHTML = '<p class="text-slate-500">Bazada avtomobil tapılmadı.</p>';
+                    return;
+                }
+
+                grid.innerHTML = cars.map(car => `
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col justify-between">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <span class="text-xs font-semibold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-1 rounded">
+                                        ${car.brand?.name || 'Marka'}
+                                    </span>
+                                    <h3 class="text-xl font-bold text-slate-800 mt-2">${car.modelName}</h3>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-sm font-medium text-slate-500">${car.year}</span>
+                                    ${token ? `
+                                        <button onclick="deleteCar('${car._id}')" title="Avtomobili sil" 
+                                            class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-1.5 rounded-lg transition text-xs">
+                                            🗑️
+                                        </button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 pt-4 border-t border-slate-100 flex justify-between items-center">
+                                <span class="text-slate-500 text-sm">Günlük qiymət:</span>
+                                <span class="text-2xl font-bold text-slate-900">${car.dailyPrice} ₼</span>
+                            </div>
+
+                            <div class="mt-5 space-y-3 bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-600 mb-1">Başlama tarixi</label>
+                                    <input type="date" id="start-${car._id}" value="2026-11-25"
+                                        class="w-full text-sm px-2.5 py-1.5 border border-slate-300 rounded bg-white">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-600 mb-1">Bitmə tarixi</label>
+                                    <input type="date" id="end-${car._id}" value="2026-11-28"
+                                        class="w-full text-sm px-2.5 py-1.5 border border-slate-300 rounded bg-white">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="px-6 pb-6">
+                            <button onclick="rentCar('${car._id}')" 
+                                class="w-full bg-slate-900 hover:bg-blue-600 text-white font-medium py-2.5 rounded-lg transition shadow-sm">
+                                İcarəyə Götür
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (err) {
+                grid.innerHTML = '<p class="text-red-500">Avtomobillər yüklənərkən xəta baş verdi.</p>';
+            }
+        }
+
+        // İcarəyə götür
+        async function rentCar(carId) {
+            if (!token) {
+                showAlert('İcarə üçün əvvəlcə daxil olun!', true);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            const startDate = document.getElementById(`start-${carId}`).value;
+            const endDate = document.getElementById(`end-${carId}`).value;
+
+            try {
+                const res = await fetch(`${API_URL}/rentals`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ carId, startDate, endDate })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    showAlert(`✅ ${data.message} (Ümumi məbləğ: ${data.rental?.totalPrice || ''} ₼)`, false);
+                } else {
+                    const errorMsg = data.error || (data.errors ? data.errors[0].msg : 'Xəta baş verdi');
+                    showAlert(`❌ ${errorMsg}`, true);
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } catch (err) {
+                showAlert('Sorğu xətası.', true);
+            }
+        }
+    </script>
+</body>
+</html>
