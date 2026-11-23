@@ -8,7 +8,6 @@
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans min-h-screen pb-12">
 
-    <!-- Navbar -->
     <nav class="bg-slate-900 text-white shadow-md">
         <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-2">
@@ -22,10 +21,8 @@
         </div>
     </nav>
 
-    <!-- Main Container -->
     <div class="max-w-6xl mx-auto px-4 py-8 space-y-8">
 
-        <!-- Bildiriş Qutusu (Alert) -->
         <div id="alertBox" class="hidden p-4 rounded-lg shadow-sm border text-sm font-medium transition-all"></div>
 
         <!-- Login Bölməsi -->
@@ -51,10 +48,8 @@
             </form>
         </div>
 
-        <!-- Admin İdarəetmə Paneli (Gizli gəlir) -->
         <div id="adminPanel" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
             
-            <!-- Marka Yaratma Formu -->
             <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                 <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center space-x-2">
                     <span>🏷️</span> <span>Yeni Marka Əlavə Et</span>
@@ -72,7 +67,6 @@
                 </form>
             </div>
 
-            <!-- Avtomobil Yaratma Formu -->
             <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                 <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center space-x-2">
                     <span>🚗</span> <span>Yeni Avtomobil Əlavə Et</span>
@@ -110,7 +104,6 @@
 
         </div>
 
-        <!-- Avtomobillər Siyahısı -->
         <div>
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-slate-800">Mövcud Avtomobillər və İcarə</h2>
@@ -164,7 +157,6 @@
             }
         }
 
-        // Login
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
@@ -221,7 +213,6 @@
             }
         }
 
-        // Marka yaratmaq
         document.getElementById('brandForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('brandName').value;
@@ -248,7 +239,6 @@
             }
         });
 
-        // Avtomobil yaratmaq
         document.getElementById('carForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const brand = document.getElementById('carBrandSelect').value;
@@ -279,7 +269,6 @@
             }
         });
 
-        // Avtomobili silmək (DELETE /api/cars/:id)
         async function deleteCar(carId) {
             if (!confirm('Bu avtomobili silmək istədiyinizə əminsinizmi?')) return;
 
@@ -303,7 +292,6 @@
             }
         }
 
-        // Avtomobilləri gətir
         async function fetchCars() {
             const grid = document.getElementById('carsGrid');
             grid.innerHTML = '<p class="text-slate-500">Yüklənir...</p>';
@@ -372,7 +360,6 @@
             }
         }
 
-        // İcarəyə götür
         async function rentCar(carId) {
             if (!token) {
                 showAlert('İcarə üçün əvvəlcə daxil olun!', true);
