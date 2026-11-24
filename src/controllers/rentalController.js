@@ -4,7 +4,7 @@ import Car from "../models/Car.js";
 export const createRental = async (req, res) => {
     try {
         const { carId, startDate, endDate } = req.body;
-        const userId = req.user?.id; 
+        const userId = req.user?.id;
 
         const start = new Date(startDate);
         const end = new Date(endDate);
@@ -22,8 +22,8 @@ export const createRental = async (req, res) => {
         });
 
         if (conflictingRental) {
-            return res.status(400).json({ 
-                error: "Bu avtomobil seçilmiş tarixlərdə artıq icarədədir! Zəhmət olmasa başqa tarix və ya avtomobil seçin." 
+            return res.status(400).json({
+                error: "Bu avtomobil seçilmiş tarixlərdə artıq icarədədir! Zəhmət olmasa başqa tarix və ya avtomobil seçin."
             });
         }
 
@@ -47,6 +47,27 @@ export const createRental = async (req, res) => {
         await newRental.save();
         res.status(201).json({ message: "Avtomobil uğurla icarəyə götürüldü!", rental: newRental });
 
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const returnRental = async (req, res) => {
+    try {
+        const rental = await Rental.findById(req.params.id);
+
+        if (!rental) {
+            return res.status(404).json({ error: "İcarə qeydi tapılmadı!" });
+        }
+
+        if (rental.status !== "active") {
+            return res.status(400).json({ error: "Bu icarə artıq bağlanıb və ya ləğv edilib!" });
+        }
+
+        rental.status = "completed";
+        await rental.save();
+
+        res.status(200).json({ message: "Avtomobil uğurla qaytarıldı və icarə tamamlandı!", rental });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
