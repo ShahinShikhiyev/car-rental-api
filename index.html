@@ -28,7 +28,7 @@
         <!-- Login Bölməsi -->
         <div id="loginSection" class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-md border border-slate-200">
             <h2 class="text-2xl font-bold mb-2 text-slate-800">Sistemə Giriş</h2>
-            <p class="text-slate-500 text-sm mb-6">Əməliyyatlar üçün admin kimi daxil olun.</p>
+            <p class="text-slate-500 text-sm mb-6">Əməliyyatlar üçün daxil olun.</p>
             
             <form id="loginForm" class="space-y-4">
                 <div>
@@ -48,60 +48,78 @@
             </form>
         </div>
 
-        <div id="adminPanel" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
-            
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center space-x-2">
-                    <span>🏷️</span> <span>Yeni Marka Əlavə Et</span>
-                </h3>
-                <form id="brandForm" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Marka Adı</label>
-                        <input type="text" id="brandName" required 
-                            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                    </div>
-                    <button type="submit" 
-                        class="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-2 rounded-lg transition">
-                        Marka Yarat
-                    </button>
-                </form>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center space-x-2">
-                    <span>🚗</span> <span>Yeni Avtomobil Əlavə Et</span>
-                </h3>
-                <form id="carForm" class="space-y-3">
-                    <div>
-                        <label class="block text-xs font-medium text-slate-700 mb-1">Marka Seçin</label>
-                        <select id="carBrandSelect" required class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-sm">
-                            <option value="">Markalar yüklənir...</option>
-                        </select>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
+        <div id="adminPanel" class="hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center space-x-2">
+                        <span>🏷️</span> <span>Yeni Marka Əlavə Et</span>
+                    </h3>
+                    <form id="brandForm" class="space-y-4">
                         <div>
-                            <label class="block text-xs font-medium text-slate-700 mb-1">Model</label>
-                            <input type="text" id="carModel" required 
-                                class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Marka Adı</label>
+                            <input type="text" id="brandName" required 
+                                class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <button type="submit" 
+                            class="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-2 rounded-lg transition">
+                            Marka Yarat
+                        </button>
+                    </form>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center space-x-2">
+                        <span>🚗</span> <span>Yeni Avtomobil Əlavə Et</span>
+                    </h3>
+                    <form id="carForm" class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">Marka Seçin</label>
+                            <select id="carBrandSelect" required class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-sm">
+                                <option value="">Markalar yüklənir...</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1">Model</label>
+                                <input type="text" id="carModel" required 
+                                    class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 mb-1">İl</label>
+                                <input type="number" id="carYear" value="2023" required 
+                                    class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm">
+                            </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-700 mb-1">İl</label>
-                            <input type="number" id="carYear" value="2023" required 
+                            <label class="block text-xs font-medium text-slate-700 mb-1">Günlük Qiymət (₼)</label>
+                            <input type="number" id="carPrice" placeholder="120" required 
                                 class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm">
                         </div>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-700 mb-1">Günlük Qiymət (₼)</label>
-                        <input type="number" id="carPrice" placeholder="120" required 
-                            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm">
-                    </div>
-                    <button type="submit" 
-                        class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 rounded-lg transition">
-                        Avtomobil Yarat
-                    </button>
-                </form>
+                        <button type="submit" 
+                            class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 rounded-lg transition">
+                            Avtomobil Yarat
+                        </button>
+                    </form>
+                </div>
+
             </div>
 
+            <!-- İcarə Qaytarma Bölməsi -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="text-lg font-bold text-slate-800 mb-2 flex items-center space-x-2">
+                    <span>🔑</span> <span>Avtomobili Qaytar (İcarəni Tamamla)</span>
+                </h3>
+                <p class="text-slate-500 text-xs mb-4">İcarə ID-sini daxil edərək aktiv icarəni <code class="bg-slate-100 px-1.5 py-0.5 rounded">completed</code> statusuna keçirə bilərsiniz.</p>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input type="text" id="returnRentalId" placeholder="İcarə ID (məs: 674...)"
+                        class="flex-1 px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                    <button type="button" onclick="returnRental()"
+                        class="bg-amber-600 hover:bg-amber-700 text-white font-medium px-6 py-2 rounded-lg transition shadow-sm">
+                        İcarəni Qaytar
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div>
@@ -148,7 +166,7 @@
                 loginSection.classList.add('hidden');
                 adminPanel.classList.remove('hidden');
                 logoutBtn.classList.remove('hidden');
-                userDisplay.textContent = '✅ Admin kimi daxil olunub';
+                userDisplay.textContent = '✅ Daxil olunub';
             } else {
                 loginSection.classList.remove('hidden');
                 adminPanel.classList.add('hidden');
@@ -382,10 +400,49 @@
                 const data = await res.json();
 
                 if (res.ok) {
-                    showAlert(`✅ ${data.message} (Ümumi məbləğ: ${data.rental?.totalPrice || ''} ₼)`, false);
+                    const rentalId = data.rental?._id || '';
+                    if (rentalId) {
+                        const input = document.getElementById('returnRentalId');
+                        if (input) input.value = rentalId;
+                    }
+                    showAlert(`✅ ${data.message} (Ümumi məbləğ: ${data.rental?.totalPrice || ''} ₼ | ID: ${rentalId})`, false);
                 } else {
                     const errorMsg = data.error || (data.errors ? data.errors[0].msg : 'Xəta baş verdi');
                     showAlert(`❌ ${errorMsg}`, true);
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } catch (err) {
+                showAlert('Sorğu xətası.', true);
+            }
+        }
+
+        async function returnRental() {
+            if (!token) {
+                showAlert('Qaytarma əməliyyatı üçün əvvəlcə daxil olun!', true);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            const rentalId = document.getElementById('returnRentalId').value.trim();
+            if (!rentalId) {
+                showAlert('Zəhmət olmasa İcarə ID daxil edin!', true);
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/rentals/${rentalId}/return`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    showAlert(`✅ ${data.message}`, false);
+                    document.getElementById('returnRentalId').value = '';
+                } else {
+                    showAlert(`❌ ${data.error || 'Qaytarma zamanı xəta baş verdi'}`, true);
                 }
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } catch (err) {
