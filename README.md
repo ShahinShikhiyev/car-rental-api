@@ -2,10 +2,13 @@
 
 Bun, Express.js və MongoDB istifadə olunaraq hazırlanmış Avtomobil İcarəsi backend layihəsi.
 
-## Tələblər
-* [Bun](https://bun.sh/) quraşdırılmalıdır.
+## İşlədilən Texnologiyalar
+- **Runtime:** Bun
+- **Framework:** Express.js
+- **Database:** MongoDB (Mongoose)
+- **Auth:** JWT (`jsonwebtoken`, `bcryptjs`)
 
-## Quraşdırma
+## Quraşdırma və İşə Salma
 
 1. Reponu klonlayın:
    ```bash
